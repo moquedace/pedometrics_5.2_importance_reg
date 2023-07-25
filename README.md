@@ -3,11 +3,9 @@ Title: "Importance - Regression"
 Authors: "Fernandes-Filho, Elpídio Inácio; Moquedace, Cássio Marques; Pereira, Luís Flávio; Veloso, Gustavo Vieira; Carvalho Junior, Waldir"
 ---
 
-
 ## Loading packages
 ```{r message=FALSE, warning=FALSE}
 pkg <- c("dplyr", "ggplot2", "stringr", "tidyr", "RColorBrewer", "data.table")
-
 sapply(pkg, require, character.only = T)
 ```
 
@@ -31,13 +29,12 @@ varfact <- c("geology", "drainage", "landforms_tpi_based",
              "terrain_surface_classification_iwahashi", "soil", "slope_idx",
              "valley_idx") %>% sort()
 
-
-
 for (h in seq_along(varfact)) {
   
   df_imp <- df_imp %>% 
     mutate(predictor = str_replace(predictor, paste0(".*", varfact[h], ".*"),
                                    varfact[h]))
+  
 }
 ```
 
@@ -48,10 +45,10 @@ df_imp <- df_imp %>%
   summarise(importance = mean(importance))
 ```
 
-
 ## Loading a dataframe with final name of variables and function for counting repetitions
 ```{r message=FALSE, warning=FALSE}
 n_cova <- read.csv2("./data/name_cova.csv")
+
 print(n_cova)
 
 dfg_imp <- left_join(df_imp, n_cova, by = c("predictor" = "name_abr")) 
@@ -89,6 +86,3 @@ imp_pred <- ggplot(dfg_imp, aes(x = importance,
 <p align="center">
 <img src="reg_imp_full.jpg" width="800">
 </p>
-
-
-
